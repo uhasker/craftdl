@@ -1,0 +1,14 @@
+.idea/
+
+__pycache__/
+
+venv/
+
+.mypy_cache/
+
+.coverage
+htmlcov/
+
+craftdl.egg-info/
+build/
+dist/

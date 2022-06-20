@@ -1,0 +1,2 @@
+class CraftdlException(Exception):
+    pass

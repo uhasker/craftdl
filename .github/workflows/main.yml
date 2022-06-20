@@ -1,0 +1,36 @@
+name: Main workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  checks:
+    name: Code checks & tests
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+      - name: install requirements
+        run: pip install -r requirements.txt
+      - name: install code check requirements
+        run: pip install black flake8 mypy radon
+      - name: check code formatting with black
+        run: black --check .
+      - name: check code quality with flake8 and radon
+        run: flake8 --ignore=E501,W503 craftdl test --radon-max-cc 10
+      - name: check types with mypy
+        run: mypy craftdl test --disallow-untyped-defs
+      - name: install coverage
+        run: pip install coverage
+      - name: run tests
+        run: coverage run --branch -m unittest discover -s test
+      - name: check code coverage
+        run: coverage report --include="craftdl/*" --fail-under=100
+
